@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Actualizar Cliente</title>
+        <style>
+            /* Estilos globales */
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #2c3e50;
+                color: #ecf0f1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-image: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+            }
+
+            nav {
+                background-color: #34495e;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            nav a {
+                text-decoration: none;
+                color: #ecf0f1;
+                background-color: #5cb85c;
+                padding: 8px 15px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            nav a:hover {
+                background-color: #4cae4c;
+                transform: scale(1.1);
+            }
+
+            h2 {
+                text-align: center;
+                color: #fff;
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            }
+
+            .form-container {
+                background-color: #34495e;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #fff;
+                font-size: 1.1rem;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #7f8c8d;
+                border-radius: 5px;
+                background-color: #ecf0f1;
+                color: #2c3e50;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+            .form-group input:focus {
+                border-color: #5cb85c;
+                background-color: #fff;
+                outline: none;
+            }
+
+            /* Estilos del botón con efecto eléctrico y fuego */
+            .btn {
+                width: 100%;
+                padding: 12px;
+                background-color: #e74c3c;
+                color: #fff;
+                font-size: 1.2rem;
+                border: 2px solid transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 300%;
+                height: 300%;
+                background: rgba(255, 0, 0, 0.6);
+                transition: all 0.6s ease;
+                border-radius: 50%;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .btn:hover::before {
+                transform: translate(-50%, -50%) scale(0);
+            }
+
+            .btn:hover {
+                background-color: #c0392b;
+                border-color: #c0392b;
+                box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+                color: #fff;
+                animation: electric 1.5s linear infinite;
+            }
+
+            .btn:active {
+                background-color: #9b2d2f;
+            }
+
+            /* Efecto eléctrico */
+            @keyframes electric {
+                0% {
+                    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 20px rgba(255, 0, 0, 0.7);
+                }
+                50% {
+                    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 0, 0, 0.7), 0 0 50px rgba(255, 0, 0, 0.7);
+                }
+                100% {
+                    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 20px rgba(255, 0, 0, 0.7);
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- Barra de navegación -->
+        <nav>
+            <span>Actualizar Cliente</span>
+            <a th:href="@{/clientes}">Listado de Clientes</a>
+        </nav>
+
+        <div class="form-container">
+            <h2>Actualizar Cliente</h2>
+            <form th:action="@{/actualizar}" th:object="${clientes}"
+                method="POST">
+                <input type="hidden" th:field="*{cliente_id}" />
+                <input type="hidden" th:field="*{usuario_id}" />
+
+                <div class="form-group">
+                    <label for="nombre">Nombre del Cliente</label>
+                    <input type="text" id="nombre" th:field="*{nombre}"
+                        placeholder="Ingresar nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellido">Apellido del Cliente</label>
+                    <input type="text" id="apellido" th:field="*{apellido}"
+                        placeholder="Ingresar apellido" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_nac">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nac" th:field="*{fecha_nac}"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dni">DNI del Cliente</label>
+                    <input type="text" id="dni" th:field="*{dni}"
+                        placeholder="Ingresar DNI" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ruc">RUC del Cliente</label>
+                    <input type="text" id="ruc" th:field="*{ruc}"
+                        placeholder="Ingresar RUC" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" th:field="*{correo}"
+                        placeholder="Ingresar correo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Número de Teléfono</label>
+                    <input type="text" id="telefono" th:field="*{telefono}"
+                        placeholder="Ingresar teléfono" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección del Cliente</label>
+                    <input type="text" id="direccion" th:field="*{direccion}"
+                        placeholder="Ingresar dirección" required>
+                </div>
+
+                <button type="submit" class="btn">Actualizar</button>
+            </form>
+        </div>
+    </body>
+</html>

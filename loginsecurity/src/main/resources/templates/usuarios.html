@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Usuarios - Diversity</title>
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- DataTables CSS -->
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+        <!-- Export Libraries -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    </head>
+
+    <body class="bg-gray-900 text-white">
+        <style>
+        /* Estilos para efectos de fuego oscuro */
+        .table-container {
+            background: linear-gradient(145deg, #4a148c, #1c1c1c);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(128, 0, 128, 0.7);
+            padding: 20px;
+        }
+
+        table {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+        }
+
+        th {
+            background: #6a1b9a;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        td:hover {
+            transform: scale(1.05);
+            background: rgba(106, 27, 154, 0.5);
+        }
+
+        .register-button-container button:hover {
+            background-color: #311b92;
+        }
+
+        /* Efectos de los botones */
+        .export-buttons button {
+            background-color: #d500f9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .export-buttons button:hover {
+            background-color: #8e24aa;
+        }
+    </style>
+
+        <header>
+            <div class="container mx-auto text-center py-4">
+                <h1 class="text-3xl font-bold">Usuarios - Diversity</h1>
+                <nav class="mt-4">
+                    <a href="index.html"
+                        class="text-purple-300 hover:text-purple-500 px-4">Inicio</a>
+                    <a href="/servicios"
+                        class="text-purple-300 hover:text-purple-500 px-4">Servicios</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="register-button-container text-center mt-6">
+            <a th:href="@{/formregisterusers}"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Registrar
+                Usuarios</a>
+        </div>
+
+        <div class="export-buttons text-center mt-4">
+            <button onclick="exportToPDF()">Exportar a PDF</button>
+            <button onclick="exportToExcel()">Exportar a Excel</button>
+            <button onclick="exportToXML()">Exportar a XML</button>
+        </div>
+
+        <div class="table-container mx-auto mt-6">
+            <table id="usuariotable" class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>EMAIL</th>
+                        <th>CONTRASEÑA</th>
+                        <th>ROL_ID</th>
+                        <th>DATE</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usuarios : ${listusuarios}"
+                        class="odd:bg-gray-800 even:bg-gray-700">
+                        <td th:text="${usuarios.usuario_id}"></td>
+                        <td th:text="${usuarios.email}"></td>
+                        <td th:text="${usuarios.contrasena}"></td>
+                        <td th:text="${usuarios.rol_id}"></td>
+                        <td th:text="${usuarios.fecha_creacion}"></td>
+                        <td>
+                            <a
+                                th:href="@{/updateusers/{id}(id=${usuarios.usuario_id})}"
+                                class="text-blue-500 hover:text-blue-700 px-2">Actualizar</a>
+                            <a
+                                th:href="@{/deleteusers/{id}(id=${usuarios.usuario_id})}"
+                                class="text-red-500 hover:text-red-700 px-2">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script src="usuario.js" defer></script>
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    </body>
+</html>

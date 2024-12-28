@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DIVERSITY: LOGIN</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+            rel="stylesheet">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb);
+                color: #fff;
+                overflow: hidden;
+                position: relative;
+            }
+
+            body::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0.5;
+            }
+
+            .container {
+                background: rgba(0, 0, 0, 0.8);
+                padding: 40px;
+                border-radius: 15px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                max-width: 400px;
+                text-align: center;
+                position: relative;
+            }
+
+            .container::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
+                animation: floatingGlow 6s infinite linear;
+                z-index: -1;
+            }
+
+            @keyframes floatingGlow {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+                100% {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+
+            h2 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                color: #fff;
+                text-transform: uppercase;
+                letter-spacing: 3px;
+                background: linear-gradient(90deg, #fbc2eb, #a6c1ee);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+                text-align: left;
+            }
+
+            .form-group label {
+                display: block;
+                font-weight: bold;
+                color: #fff;
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 15px;
+                border-radius: 8px;
+                border: 1px solid #fff;
+                font-size: 16px;
+                outline: none;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+            }
+
+            .form-group input:focus {
+                border-color: #fbc2eb;
+                background: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 0 10px #fbc2eb;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+                color: #fff;
+                padding: 15px;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                cursor: pointer;
+                width: 100%;
+                font-weight: bold;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 300%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: skewX(-45deg);
+                transition: all 0.5s;
+            }
+
+            .btn-primary:hover::after {
+                left: 100%;
+            }
+
+            .btn-primary:hover {
+                box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+                transform: scale(1.05);
+            }
+
+            .form-group.text-center {
+                margin-top: 20px;
+            }
+
+            .form-group.text-center a {
+                color: #fbc2eb;
+                font-weight: bold;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .form-group.text-center a:hover {
+                color: #a6c1ee;
+                text-decoration: underline;
+            }
+
+            .social-icons {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                gap: 15px;
+            }
+
+            .social-icons a {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+                border-radius: 50%;
+                color: #fff;
+                font-size: 20px;
+                text-decoration: none;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .social-icons a:hover {
+                transform: scale(1.1);
+                box-shadow: 0 5px 15px rgba(255, 255, 255, 0.5);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>DIVERSITY</h2>
+            <form th:action="@{/login}" method="post">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">Invalid username or
+                        password.</div>
+                </div>
+                <div th:if="${param.logout}">
+                    <div class="alert alert-info">You have been logged
+                        out.</div>
+                </div>
+                <div class="form-group">
+                    <label for="username">Email:</label>
+                    <input type="text" id="username" name="username" autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="login-submit" class="btn-primary"
+                        value="Sign In">
+                </div>
+            </form>
+            <div class="form-group text-center">
+                <span>New user? <a th:href="@{/registro}">Register
+                        here</a></span>
+            </div>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank">FB</a>
+                <a href="https://twitter.com" target="_blank">TW</a>
+                <a href="https://github.com" target="_blank">GT</a>
+                <a href="https://instagram.com" target="_blank">IG</a>
+            </div>
+        </div>
+    </body>
+</html>
