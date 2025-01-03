@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Almacenes - Diversity</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    </head>
+    <body class="bg-gray-900 text-white">
+        <style>
+        .table-container {
+            background: linear-gradient(145deg, #4a148c, #1c1c1c);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(128, 0, 128, 0.7);
+            padding: 20px;
+        }
+
+        table {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+        }
+
+        th {
+            background: #6a1b9a;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        td:hover {
+            transform: scale(1.05);
+            background: rgba(106, 27, 154, 0.5);
+        }
+
+        .btn-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #d500f9;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50%;
+            font-size: 2em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-float:hover {
+            background-color: #8e24aa;
+        }
+    </style>
+
+        <header>
+            <div class="container mx-auto text-center py-4">
+                <h1 class="text-3xl font-bold">Almacenes - Diversity</h1>
+                <nav class="mt-4">
+                    <a href="/"
+                        class="text-purple-300 hover:text-purple-500 px-4">Inicio</a>
+                </nav>
+            </div>
+        </header>
+        <div class="register-button-container text-center mt-6">
+            <a th:href="@{/openalmacenproductos}"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Ver Productos Por Almacén
+            </a>
+        </div>
+        <div class="register-button-container text-center mt-6">
+            <a th:href="@{/formregisteralmacen}"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Registrar Almacén
+            </a>
+        </div>
+        <!-- Buttons below the table -->
+        <div class="button-container text-center mt-6">
+            <a href="/reporte"
+                class="btn-custom bg-indigo-500 text-white px-6 py-3 rounded hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 mx-2">
+                Reporte
+            </a>
+        </div>
+        <div class="table-container mx-auto mt-6">
+            <table id="almacenTable" class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="almacen : ${listalmacenes}"
+                        class="odd:bg-gray-800 even:bg-gray-700">
+                        <td th:text="${almacen.almacenid}"></td>
+                        <td th:text="${almacen.nombrealmacen}"></td>
+                        <td th:text="${almacen.direccionalmacen}"></td>
+                        <td>
+                            <a
+                                th:href="@{/openupdatealmacen/{id}(id=${almacen.almacenid})}"
+                                class="text-blue-500 hover:text-blue-700 px-2">Actualizar</a>
+                            <a
+                                th:href="@{/deletealmacen/{id}(id=${almacen.almacenid})}"
+                                class="text-red-500 hover:text-red-700 px-2">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <a th:href="@{/formregisteralmacen}" class="btn-float">+</a>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#almacenTable').DataTable();
+        });
+    </script>
+    </body>
+</html>

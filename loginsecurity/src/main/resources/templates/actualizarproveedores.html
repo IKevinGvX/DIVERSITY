@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Proveedor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d);
+        }
+
+        nav {
+            background-color: #34495e;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        nav .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h3 {
+            font-size: 1.5em;
+            color: #ecf0f1;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(52, 73, 94, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-container h2 {
+            color: #ecf0f1;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ecf0f1;
+            font-size: 1.1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #2980b9;
+            border-radius: 5px;
+            background: rgba(236, 240, 241, 0.9);
+            color: #2c3e50;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: #e74c3c;
+            border: none;
+            border-radius: 5px;
+            color: #ecf0f1;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .btn-back {
+            background: #27ae60;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #2ecc71;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 95%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h3>Actualizar Proveedor</h3>
+            <a href="/proveedores" class="btn-back">Volver a Proveedores</a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h2>Actualizar Proveedor</h2>
+        <form th:object="${proveedor}" th:action="@{/updateproveedores}" method="POST">
+            <input type="hidden" th:field="*{proveedor_id}" />
+
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" th:field="*{nombre}" 
+                       placeholder="Nombre del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" th:field="*{apellido}" 
+                       placeholder="Apellido del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dni">DNI</label>
+                <input type="number" id="dni" th:field="*{dni}" 
+                       placeholder="DNI del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="ruc">RUC</label>
+                <input type="number" id="ruc" th:field="*{ruc}" 
+                       placeholder="RUC del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" th:field="*{correo}" 
+                       placeholder="Correo del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" th:field="*{telefono}" 
+                       placeholder="Teléfono del proveedor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" th:field="*{direccion}" 
+                       placeholder="Dirección del proveedor" required>
+            </div>
+
+            <button type="submit" class="btn">Actualizar Proveedor</button>
+        </form>
+    </div>
+</body>
+</html>

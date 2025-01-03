@@ -45,6 +45,7 @@ public class InicioController {
     @GetMapping("/usuarios")
     public String viewotrer(Model model) {
         model.addAttribute("listusuarios", usuariosService.getallusers());
+        model.addAttribute("roles", productservices.getallroles());
         return "usuarios";
     }
 

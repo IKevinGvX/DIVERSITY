@@ -16,6 +16,11 @@ public class ClienteController {
     @Autowired
     private ClienteServices empleadoserivcio;
 
+    @GetMapping("index/3")
+    public String redireccionamient2o() {
+        return "index";
+    }
+
     @PostMapping("/actualizar")
     public String updatecliente(@ModelAttribute("clientes") Clientes empleado) {
         empleadoserivcio.updatecliente(empleado);

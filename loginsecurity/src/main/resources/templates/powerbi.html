@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inspection Report</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@600&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            integrity="sha512-Fo3rlrZj/k7ujTTXRNFLGQ3RVubMVfHbQzSZgkX8dYb9x9xRbV8+4TkC7qL65iEbLraWaqyf2+hYJjE9eU8JDg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+        :root {
+            --primary-color: #009688; /* Teal */
+            --secondary-color: #9C27B0; /* Purple */
+            --accent-color: #FF9800; /* Orange */
+            --background-color: #f0f4f8; /* Light Gray */
+            --text-color: #333333; /* Dark Gray */
+            --header-height: 60px;
+            --transition-speed: 0.3s;
+            --modal-bg: rgba(0, 0, 0, 0.6);
+            --modal-content-bg: #ffffff;
+            --modal-text-color: #333333;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --card-border-radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4caf50; /* Green */
+            --secondary-color: #673ab7; /* Deep Purple */
+            --accent-color: #ff5722; /* Deep Orange */
+            --background-color: #1e272e;
+            --text-color: #ecf0f1;
+            --modal-content-bg: #34495e;
+            --modal-text-color: #ecf0f1;
+            --card-bg: #2c3e50;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.5s;
+        }
+
+        nav .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5em;
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+            letter-spacing: 1px;
+        }
+
+        nav .links {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav .links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-speed), transform 0.3s;
+            position: relative;
+        }
+
+        nav .links a::after {
+            content: '';
+            display: block;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width var(--transition-speed);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
+
+        nav .links a:hover {
+            color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        nav .links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            transition: color var(--transition-speed);
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        .spacer {
+            height: var(--header-height);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--secondary-color);
+            padding: 80px 20px;
+            text-align: center;
+            animation: slideDown 1s ease-out;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .iframe-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            animation: fadeIn 1s ease-in-out;
+            background: linear-gradient(135deg, var(--background-color), #e0f7fa);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            border-radius: var(--card-border-radius);
+            width: 100%;
+            max-width: 1200px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            z-index: -1;
+            border-radius: var(--card-border-radius);
+            filter: blur(8px);
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        iframe:hover {
+            transform: scale(1.01);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--modal-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInModal 0.5s;
+        }
+
+        .modal-content {
+            background-color: var(--modal-content-bg);
+            color: var(--modal-text-color);
+            padding: 30px 40px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            max-width: 500px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2em;
+            color: var(--primary-color);
+        }
+
+        .modal-content p {
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--modal-text-color);
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        .modal-content button {
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color var(--transition-speed), transform 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--accent-color);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 5px;
+            background: var(--accent-color);
+            border-radius: 2.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            nav .links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+
+            .spacer {
+                display: none;
+            }
+
+            .hero {
+                padding: 60px 15px;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .iframe-container {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            iframe {
+                height: 400px;
+            }
+
+            footer {
+                padding: 15px;
+            }
+
+            footer::before {
+                width: 40px;
+                height: 4px;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo" th:text="${logoText}">Inspection</a>
+                <div class="links">
+                    <a href="/productos" th:text="${homeLink}">Home</a>
+                    <a href="/reportes" th:text="${reportLink}">Report</a>
+                    <a href="/contacts" th:text="${contactLink}">Contact</a>
+                </div>
+                <div class="theme-toggle" id="theme-toggle"
+                    aria-label="Toggle Theme" role="button" tabindex="0">
+                    <i class="fas fa-moon"></i>
+                </div>
+            </nav>
+            <div class="spacer"></div>
+
+            <section class="hero">
+                <h1 th:text="${welcomeTitle}">Welcome to the Inspection
+                    Report</h1>
+                <p th:text="${welcomeSubtitle}">Your comprehensive source for
+                    detailed inspection data.</p>
+            </section>
+
+            <div class="iframe-container">
+                <div class="card">
+                    <iframe title="Inspection ONE OPERATOR"
+                        th:src="@{${iframeUrl}}"
+                        allowfullscreen
+                        sandbox="allow-scripts allow-same-origin"
+                        aria-label="Inspection ONE OPERATOR Power BI Report">
+                    </iframe>
+                </div>
+            </div>
+
+            <footer>
+                <p th:text="${footerText}">© 2024 Inspection Report. All rights
+                    reserved.</p>
+            </footer>
+        </div>
+
+        <div class="modal" id="welcome-modal" role="dialog" aria-modal="true"
+            aria-labelledby="modal-title">
+            <div class="modal-content">
+                <span class="close-modal" id="close-modal"
+                    aria-label="Close">&times;</span>
+                <h2 th:text="${modalTitle}">Welcome!</h2>
+                <p th:text="${modalMessage}">We're glad to have you here.
+                    Explore our inspection reports and data.</p>
+                <button id="modal-ok-button">OK</button>
+            </div>
+        </div>
+
+        <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        toggleButton.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                toggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        toggleButton.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                toggleButton.click();
+            }
+        });
+
+        const modal = document.getElementById('welcome-modal');
+        const closeModal = document.getElementById('close-modal');
+        const okButton = document.getElementById('modal-ok-button');
+
+        function showModal() {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function hideModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onload = function() {
+            showModal();
+            setTimeout(() => {
+                hideModal();
+            }, 10000); 
+        };
+
+        closeModal.addEventListener('click', hideModal);
+        okButton.addEventListener('click', hideModal);
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                hideModal();
+            }
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.style.display === 'flex') {
+                hideModal();
+            }
+        });
+    </script>
+    </body>
+</html>

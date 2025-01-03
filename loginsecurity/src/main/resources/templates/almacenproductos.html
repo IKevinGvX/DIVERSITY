@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Productos De Almacenes - Diversity</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    </head>
+    <body class="bg-gray-900 text-white">
+        <style>
+        .table-container {
+            background: linear-gradient(145deg, #4a148c, #1c1c1c);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(128, 0, 128, 0.7);
+            padding: 20px;
+        }
+
+        table {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+        }
+
+        th {
+            background: #6a1b9a;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        td:hover {
+            transform: scale(1.05);
+            background: rgba(106, 27, 154, 0.5);
+        }
+
+        .btn-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #d500f9;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 50%;
+            font-size: 2em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-float:hover {
+            background-color: #8e24aa;
+        }
+    </style>
+
+        <header>
+            <div class="container mx-auto text-center py-4">
+                <h1 class="text-3xl font-bold">Almacenes Productos Destinados-
+                    Diversity</h1>
+                <nav class="mt-4">
+                    <a href="/"
+                        class="text-purple-300 hover:text-purple-500 px-4">Inicio</a>
+                </nav>
+            </div>
+        </header>
+
+        <div class="register-button-container text-center mt-6">
+            <a th:href="@{/formregisteralmp}"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Registrar Productos Para Almacén
+            </a>
+        </div>
+
+        <div class="table-container mx-auto mt-6">
+            <table id="almacenTable" class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Products</th>
+                        <th>Store</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="proalm : ${almacen_productos}"
+                        class="odd:bg-gray-800 even:bg-gray-700">
+                        <td th:text="${proalm.almproid}"></td>
+                        <td th:text="${proalm.productoid}"></td>
+                        <td th:text="${proalm.almacenid}"></td>
+                        <td th:text="${proalm.fechaenvio}"></td>
+                        <td th:text="${proalm.estado}"></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="floating-filter fixed bottom-10 right-10">
+            <button id="filterStatusBtn"
+                class="btn-floating bg-blue-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-110">
+                🔍
+            </button>
+
+            <div id="filterForm"
+                class="hidden bg-white text-gray-800 p-6 rounded-lg shadow-lg max-w-sm">
+                <h3 class="text-lg font-bold mb-4">Filtrar por Estado</h3>
+                <select id="statusFilter"
+                    class="w-full px-3 py-2 border rounded-lg mb-4">
+                    <option value>Seleccione un Estado</option>
+                    <option value="Cancelado">Cancelado</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Entregado">Entregado</option>
+                    <option value="Enviado">Enviado</option>
+                </select>
+                <button id="applyFilterBtn"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Aplicar Filtro
+                </button>
+            </div>
+        </div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#almacenTable').DataTable();
+        });
+    </script>
+        <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const filterStatusBtn = document.getElementById("filterStatusBtn");
+        const filterForm = document.getElementById("filterForm");
+        const applyFilterBtn = document.getElementById("applyFilterBtn");
+        const statusFilter = document.getElementById("statusFilter");
+        const tableRows = document.querySelectorAll("#almacenTable tbody tr");
+
+        filterStatusBtn.addEventListener("click", () => {
+            filterForm.classList.toggle("hidden");
+        });
+
+        applyFilterBtn.addEventListener("click", () => {
+            const selectedStatus = statusFilter.value;
+
+            tableRows.forEach(row => row.classList.remove("hidden"));
+            
+            if (selectedStatus) {
+                tableRows.forEach(row => {
+                    const statusCell = row.querySelector("td:nth-child(5)");
+                    if (statusCell && statusCell.textContent.trim() !== selectedStatus) {
+                        row.classList.add("hidden");
+                    }
+                });
+            }
+
+            // Close the filter form
+            filterForm.classList.add("hidden");
+        });
+    });
+</script>
+
+    </body>
+</html>

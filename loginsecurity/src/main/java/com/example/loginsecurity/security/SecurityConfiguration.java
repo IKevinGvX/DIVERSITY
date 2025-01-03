@@ -27,7 +27,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/formulario-cliente/**").hasRole("CLIENTE")
                 .requestMatchers("/empleado/**").hasRole("EMPLEADO")
-                .requestMatchers("/almacen/**").hasRole("ALMACEN")
+                // .requestMatchers("/almacen/**").hasRole("ALMACEN")
+                
 
                 // Cualquier otra solicitud requiere autenticación
                 .anyRequest().authenticated())

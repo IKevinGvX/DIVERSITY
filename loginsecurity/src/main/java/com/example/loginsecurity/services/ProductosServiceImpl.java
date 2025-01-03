@@ -7,16 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.loginsecurity.model.Productos;
+import com.example.loginsecurity.model.roles;
 import com.example.loginsecurity.repository.ProductoRepository;
+import com.example.loginsecurity.repository.rolesRepository;
 
 @Service
 public class ProductosServiceImpl implements ProductoServices {
     @Autowired
     private ProductoRepository prorepository;
+    @Autowired
+    private rolesRepository rolireRepository;
 
     @Override
     public List<Productos> getProductsWithLowStock(int stockMinimo) {
         return prorepository.findByStockLessThan(stockMinimo);
+    }
+
+    @Override
+    public List<roles> getallroles() {
+        return rolireRepository.findAll();
     }
 
     @Override
@@ -48,11 +57,11 @@ public class ProductosServiceImpl implements ProductoServices {
 
     @Override
     public Productos updateproducts(Productos productsupds) {
-        Optional<Productos> optional = prorepository.findById(productsupds.getProducto_id());
+        Optional<Productos> optional = prorepository.findById(productsupds.getProductoid());
 
         if (optional.isPresent()) {
             Productos produexists = optional.get();
-            produexists.setNombre_producto(productsupds.getNombre_producto());
+            produexists.setNombreproducto(productsupds.getNombreproducto());
             produexists.setDescripcion(productsupds.getDescripcion());
             produexists.setPrecio(productsupds.getPrecio());
             produexists.setStock(productsupds.getStock());
@@ -61,7 +70,7 @@ public class ProductosServiceImpl implements ProductoServices {
             return prorepository.save(produexists);
         } else {
             throw new RuntimeException(
-                    "No se puede actualizar. Empleado no encontrado con id: " + productsupds.getProducto_id());
+                    "No se puede actualizar. Empleado no encontrado con id: " + productsupds.getProductoid());
         }
     }
 

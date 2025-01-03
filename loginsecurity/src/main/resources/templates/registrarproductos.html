@@ -157,7 +157,6 @@
 
     </style>
     </head>
-
     <body>
         <nav>
             <div class="container">
@@ -169,43 +168,49 @@
 
         <div class="form-container">
             <h3>Formulario de Producto</h3>
-            <form th:object="${productos}" th:action="@{/saveproductsexists}" method="post">
+            <form th:object="${productos}" th:action="@{/saveproductsexists}"
+                method="post">
                 <div class="form-group">
-                    <label for="nombre_producto">Nombre del Producto</label>
-                    <input type="text" id="nombre_producto" th:field="*{nombre_producto}" required />
+                    <label for="nombreproducto">Nombre del Producto</label>
+                    <input type="text" id="nombreproducto"
+                        th:field="*{nombreproducto}" required />
                 </div>
-            
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
-                    <input type="text" id="descripcion" th:field="*{descripcion}" required />
+                    <input type="text" id="descripcion"
+                        th:field="*{descripcion}" required />
                 </div>
-            
+
                 <div class="form-group">
                     <label for="precio">Precio</label>
-                    <input type="number" id="precio" th:field="*{precio}" required />
+                    <input type="number" id="precio" th:field="*{precio}"
+                        required />
                 </div>
-            
+
                 <div class="form-group">
                     <label for="stock">Stock</label>
-                    <input type="number" id="stock" th:field="*{stock}" required />
+                    <input type="number" id="stock" th:field="*{stock}"
+                        required />
                 </div>
-            
+
                 <div class="form-group">
                     <label for="idcategoria">Categoría</label>
                     <select id="idcategoria" th:field="*{idcategoria}" required>
-                        <option value="" disabled selected>Seleccione una categoría</option>
-                        <option th:each="cate : ${categorias}" 
-                                th:value="${cate.idcategoria}" 
-                                th:text="${cate.descripcion}">
+                        <option value="idcategoria" disabled selected>Seleccione
+                            una
+                            categoría</option>
+                        <option th:each=" cate : ${categorias}"
+                            th:value="${cate.idcategoria}"
+                            th:text="${cate.descripcion}">
                         </option>
                     </select>
                 </div>
-            
+
                 <div class="form-group">
                     <button type="submit">Registrar Producto</button>
                 </div>
             </form>
-            
+
         </div>
 
         <div class="toast-message" id="toastMessage">

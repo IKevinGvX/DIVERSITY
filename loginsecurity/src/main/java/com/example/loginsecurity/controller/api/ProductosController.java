@@ -44,7 +44,7 @@ public class ProductosController {
 
     @PostMapping("/updateproducts/{id}")
     public Productos updateproducts(@RequestBody Productos pro, @PathVariable Long id) {
-        pro.setProducto_id(id);
+        pro.setProductoid(id);
         return proservices.updateproducts(pro);
     }
 

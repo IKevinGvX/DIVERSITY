@@ -11,25 +11,25 @@ import jakarta.persistence.Table;
 public class Productos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long producto_id;
-    private String nombre_producto, descripcion;
+    private Long productoid;
+    private String nombreproducto, descripcion;
     private Double precio;
     private Integer stock, idcategoria;
 
-    public Long getProducto_id() {
-        return producto_id;
+    public Long getProductoid() {
+        return productoid;
     }
 
-    public void setProducto_id(Long producto_id) {
-        this.producto_id = producto_id;
+    public void setProductoid(Long productoid) {
+        this.productoid = productoid;
     }
 
-    public String getNombre_producto() {
-        return nombre_producto;
+    public String getNombreproducto() {
+        return nombreproducto;
     }
 
-    public void setNombre_producto(String nombre_producto) {
-        this.nombre_producto = nombre_producto;
+    public void setNombreproducto(String nombreproducto) {
+        this.nombreproducto = nombreproducto;
     }
 
     public String getDescripcion() {
@@ -64,16 +64,4 @@ public class Productos {
         this.idcategoria = idcategoria;
     }
 
-    public Productos(Long producto_id, String nombre_producto, String descripcion, Double precio, Integer stock,
-            Integer idcategoria) {
-        this.producto_id = producto_id;
-        this.nombre_producto = nombre_producto;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.idcategoria = idcategoria;
-    }
-
-    public Productos() {
-    }
 }

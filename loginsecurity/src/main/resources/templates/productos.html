@@ -101,10 +101,11 @@
             <div class="container mx-auto text-center py-4">
                 <h1 class="text-3xl font-bold">Productos - Diversity</h1>
                 <nav class="mt-4">
-                    <a href="index.html"
+                    <a href="/index/2"
                         class="text-purple-300 hover:text-purple-500 px-4">Inicio</a>
-                    <a href="/estadisticas"
-                        class="text-purple-300 hover:text-purple-500 px-4">Estadisticas</a>
+                    <a href="/powerbi"
+                        class="text-purple-300 hover:text-purple-500 px-4">Power
+                        Bi</a>
                     <a href="/reportes"
                         class="text-purple-300 hover:text-purple-500 px-4">Productos
                         Menos Stock
@@ -141,17 +142,17 @@
                 <tbody>
                     <tr th:each="producto : ${listproducts}"
                         class="odd:bg-gray-800 even:bg-gray-700">
-                        <td th:text="${producto.producto_id}"></td>
-                        <td th:text="${producto.nombre_producto}"></td>
+                        <td th:text="${producto.productoid}"></td>
+                        <td th:text="${producto.nombreproducto}"></td>
                         <td th:text="${producto.descripcion}"></td>
                         <td th:text="${producto.stock}"></td>
                         <td th:text="${producto.precio}"></td>
                         <td>
                             <a
-                                th:href="@{/openupdate/{id}(id=${producto.producto_id})}"
+                                th:href="@{/openupdate/{id}(id=${producto.productoid})}"
                                 class="text-blue-500 hover:text-blue-700 px-2">Actualizar</a>
                             <a
-                                th:href="@{/deleteproducts/{id}(id=${producto.producto_id})}"
+                                th:href="@{/deleteproducts/{id}(id=${producto.productoid})}"
                                 class="text-red-500 hover:text-red-700 px-2">Eliminar</a>
                         </td>
                     </tr>
