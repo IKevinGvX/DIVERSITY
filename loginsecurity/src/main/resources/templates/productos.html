@@ -11,14 +11,13 @@
 
         <!-- DataTables CSS -->
         <link rel="stylesheet"
-            href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+            href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <link rel="stylesheet"
-            href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+            href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
     </head>
 
     <body class="bg-gray-900 text-white">
         <style>
-        /* Estilos para efectos de fuego oscuro */
         .table-container {
             background: linear-gradient(145deg, #4a148c, #1c1c1c);
             border-radius: 10px;
@@ -43,57 +42,30 @@
             transition: transform 0.3s, background 0.3s;
         }
 
-        td:hover {
-            transform: scale(1.05);
-            background: rgba(106, 27, 154, 0.5);
+        td.low-stock {
+            color: #ff4d4d;
+            font-weight: bold;
         }
 
-        .register-button-container button:hover {
-            background-color: #311b92;
+        .floating-filter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #222;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Efectos de los botones */
-        .export-buttons button {
-            background-color: #d500f9;
+        .floating-filter input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 10px;
+            background-color: #333;
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 10px;
-            margin-right: 10px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .export-buttons button:hover {
-            background-color: #8e24aa;
-        }
-
-        /* Botón flotante */
-        .btn-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #d500f9;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 50%;
-            font-size: 2em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-float:hover {
-            background-color: #8e24aa;
-        }
-
-        .chart-container {
-            margin-top: 30px;
-            background-color: #222;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            border-radius: 5px;
         }
     </style>
 
@@ -108,23 +80,22 @@
                         Bi</a>
                     <a href="/reportes"
                         class="text-purple-300 hover:text-purple-500 px-4">Productos
-                        Menos Stock
-                    </a>
+                        Menos Stock</a>
                 </nav>
             </div>
         </header>
+
+        <div class="floating-filter">
+            <label for="stockFilter">Filtrar por stock menor a:</label>
+            <input type="number" id="stockFilter"
+                placeholder="Ingrese cantidad..." />
+        </div>
 
         <div class="register-button-container text-center mt-6">
             <a th:href="@{/formregisterproducts}"
                 class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
                 Registrar Producto
             </a>
-        </div>
-
-        <div class="export-buttons text-center mt-4">
-            <button onclick="exportToPDF()">Exportar a PDF</button>
-            <button onclick="exportToExcel()">Exportar a Excel</button>
-            <button onclick="exportToXML()">Exportar a XML</button>
         </div>
 
         <div class="table-container mx-auto mt-6">
@@ -160,48 +131,104 @@
             </table>
         </div>
 
-        <div class="chart-container mx-auto mt-6">
-            <h3 class="text-lg font-bold mb-4">Gráfico de Ventas</h3>
-            <canvas id="ventasChart"></canvas>
-        </div>
-
-        <a th:href="@{/formregisterproducts}" class="btn-float">+</a>
-
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script
-            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.flash.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
         <script>
-        // Inicializar DataTable
         $(document).ready(function () {
-            $('#productostable').DataTable();
-        });
-
-        // Configurar el gráfico de ventas
-        const ctx = document.getElementById('ventasChart').getContext('2d');
-        const ventasChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
-                datasets: [{
-                    label: 'Ventas',
-                    data: [1200, 1900, 3000, 500, 2000, 3000],
-                    backgroundColor: 'rgba(106, 27, 154, 0.5)',
-                    borderColor: 'rgba(106, 27, 154, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+            // Inicializar DataTable con botones
+            const table = $('#productostable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Exportar a PDF',
+                        className: 'bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Exportar a Excel',
+                        className: 'bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Exportar a CSV',
+                        className: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'
+                    },
+                    {
+                        text: 'Exportar a XML',
+                        action: function (e, dt, node, config) {
+                            exportToXML(dt);
+                        },
+                        className: 'bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        className: 'bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700'
+                    }
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                createdRow: function (row, data) {
+                    // Resaltar en rojo los valores de stock menores a 30
+                    const stock = parseInt(data[3], 10);
+                    if (stock < 30) {
+                        $('td', row).eq(3).addClass('low-stock');
                     }
                 }
-            }
+            });
+
+            // Filtrar por stock desde el input flotante
+            $('#stockFilter').on('input', function () {
+                const value = $(this).val();
+                if (value) {
+                    table.column(3).search('^([0-9]|[1-2][0-9])$', true, false).draw();
+                } else {
+                    table.column(3).search('').draw();
+                }
+            });
         });
+
+        function exportToXML(dt) {
+            const data = dt.rows({ search: 'applied' }).data().toArray();
+            let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<productos>\n';
+
+            data.forEach(row => {
+                xml += '  <producto>\n';
+                xml += `    <id>${row[0]}</id>\n`;
+                xml += `    <nombre>${row[1]}</nombre>\n`;
+                xml += `    <categoria>${row[2]}</categoria>\n`;
+                xml += `    <stock>${row[3]}</stock>\n`;
+                xml += `    <precio>${row[4]}</precio>\n`;
+                xml += '  </producto>\n';
+            });
+
+            xml += '</productos>';
+
+            const blob = new Blob([xml], { type: 'application/xml' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'productos.xml';
+            link.click();
+        }
     </script>
     </body>
 

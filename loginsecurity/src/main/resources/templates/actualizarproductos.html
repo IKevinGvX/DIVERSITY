@@ -148,7 +148,8 @@
                 <div class="form-group">
                     <label for="idcategoria">Categoría</label>
                     <select id="idcategoria" th:field="*{idcategoria}" required>
-                        <option value disabled>Seleccione una categoría</option>
+                        <option value="idcategoria" disabled>Seleccione una
+                            categoría</option>
                         <option th:each="categoria : ${categorias}"
                             th:value="${categoria.idcategoria}"
                             th:text="${categoria.descripcion}"
