@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Almacén</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrar Almacén</title>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -122,40 +122,41 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <div class="container">
-            <h3>Registrar Almacén</h3>
-            <a href="/almacen" class="btn-back">Volver</a>
+    </head>
+    <body>
+        <nav>
+            <div class="container">
+                <h3>Registrar Almacén</h3>
+                <a href="/almacen" class="btn-back">Volver</a>
+            </div>
+        </nav>
+
+        <div class="form-container">
+            <h3>Formulario de Almacén</h3>
+            <form th:object="${almacen}" th:action="@{/savealmacen}"
+                method="post">
+                <div class="form-group">
+                    <label for="nombre_almacen">Nombre del Almacén</label>
+                    <input type="text"
+                        id="nombre_almacen"
+                        th:field="*{nombrealmacen}"
+                        required
+                        placeholder="Ingrese el nombre del almacén" />
+                </div>
+
+                <div class="form-group">
+                    <label for="direccion_almacen">Dirección del Almacén</label>
+                    <input type="text"
+                        id="direccion_almacen"
+                        th:field="*{direccionalmacen}"
+                        required
+                        placeholder="Ingrese la dirección del almacén" />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Registrar Almacén</button>
+                </div>
+            </form>
         </div>
-    </nav>
-
-    <div class="form-container">
-        <h3>Formulario de Almacén</h3>
-        <form th:object="${almacen}" th:action="@{/savealmacen}" method="post">
-            <div class="form-group">
-                <label for="nombre_almacen">Nombre del Almacén</label>
-                <input type="text" 
-                       id="nombre_almacen" 
-                       th:field="*{nombre_almacen}" 
-                       required 
-                       placeholder="Ingrese el nombre del almacén"/>
-            </div>
-
-            <div class="form-group">
-                <label for="direccion_almacen">Dirección del Almacén</label>
-                <input type="text" 
-                       id="direccion_almacen" 
-                       th:field="*{direccion_almacen}" 
-                       required 
-                       placeholder="Ingrese la dirección del almacén"/>
-            </div>
-
-            <div class="form-group">
-                <button type="submit">Registrar Almacén</button>
-            </div>
-        </form>
-    </div>
-</body>
+    </body>
 </html>

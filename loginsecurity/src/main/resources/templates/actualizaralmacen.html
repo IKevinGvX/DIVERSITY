@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Almacén</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Actualizar Almacén</title>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -136,40 +136,41 @@
             }
         }
     </style>
-</head>
-<body>
-    <nav>
-        <div class="container">
-            <h3>Actualizar Almacén</h3>
-            <a href="/almacen" class="btn-back">Volver a Almacenes</a>
+    </head>
+    <body>
+        <nav>
+            <div class="container">
+                <h3>Actualizar Almacén</h3>
+                <a href="/almacen" class="btn-back">Volver a Almacenes</a>
+            </div>
+        </nav>
+
+        <div class="form-container">
+            <h2>Actualizar Almacén</h2>
+            <form th:object="${almacen}" th:action="@{/updatealmacen}"
+                method="POST">
+                <input type="hidden" th:field="*{almacenid}" />
+
+                <div class="form-group">
+                    <label for="nombre_almacen">Nombre del Almacén</label>
+                    <input type="text"
+                        id="nombrealmacen"
+                        th:field="*{nombrealmacen}"
+                        placeholder="Nombre del almacén"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="direccionalmacen">Dirección del Almacén</label>
+                    <input type="text"
+                        id="direccionalmacen"
+                        th:field="*{direccionalmacen}"
+                        placeholder="Dirección del almacén"
+                        required>
+                </div>
+
+                <button type="submit" class="btn">Actualizar Almacén</button>
+            </form>
         </div>
-    </nav>
-
-    <div class="form-container">
-        <h2>Actualizar Almacén</h2>
-        <form th:object="${almacen}" th:action="@{/updatealmacen}" method="POST">
-            <input type="hidden" th:field="*{almacen_id}" />
-
-            <div class="form-group">
-                <label for="nombre_almacen">Nombre del Almacén</label>
-                <input type="text" 
-                       id="nombre_almacen" 
-                       th:field="*{nombre_almacen}" 
-                       placeholder="Nombre del almacén"
-                       required>
-            </div>
-
-            <div class="form-group">
-                <label for="direccion_almacen">Dirección del Almacén</label>
-                <input type="text" 
-                       id="direccion_almacen" 
-                       th:field="*{direccion_almacen}" 
-                       placeholder="Dirección del almacén"
-                       required>
-            </div>
-
-            <button type="submit" class="btn">Actualizar Almacén</button>
-        </form>
-    </div>
-</body>
+    </body>
 </html>

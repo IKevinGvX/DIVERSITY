@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Actualizar Movimiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        nav {
+            background-color: #34495e;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        form {
+            background-color: #34495e;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span>Actualizar Movimiento</span>
+        <a th:href="@{/movimientos}">Listado de Movimientos</a>
+    </nav>
+
+    <form th:action="@{/movimientos/actualizar}" th:object="${movimiento}" method="POST">
+        <input type="hidden" th:field="*{movimiento_id}" />
+        <div class="form-group">
+            <label for="almacen_id">ID Almacén</label>
+            <input type="number" id="almacen_id" th:field="*{almacen_id}" placeholder="Ingrese ID Almacén" required>
+        </div>
+        <div class="form-group">
+            <label for="fecha_envio">Fecha Envío</label>
+            <input type="date" id="fecha_envio" th:field="*{fecha_envio}" required>
+        </div>
+        <div class="form-group">
+            <label for="tipo_movimiento">Tipo Movimiento</label>
+            <select id="tipo_movimiento" th:field="*{tipo_movimiento}" required>
+                <option value="" disabled>Seleccione el tipo de movimiento</option>
+                <option value="Ingreso" th:selected="${movimiento.tipo_movimiento == 'Ingreso'}">Ingreso</option>
+                <option value="Egreso" th:selected="${movimiento.tipo_movimiento == 'Egreso'}">Egreso</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="total">Total</label>
+            <input type="number" step="0.01" id="total" th:field="*{total}" placeholder="Ingrese el total" required>
+        </div>
+        <div class="form-group">
+            <label for="cliente_id">ID Cliente</label>
+            <input type="number" id="cliente_id" th:field="*{cliente_id}" placeholder="Ingrese ID Cliente" required>
+        </div>
+        <button type="submit" class="btn">Actualizar</button>
+    </form>
+</body>
+</html>

@@ -81,29 +81,44 @@
         }
 
         /* Main Section */
-        .main-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: nowrap; /* Impide que los cards se apilen verticalmente */
-            gap: 20px;
-            margin-top: 30px;
-            overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
-            padding: 20px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
+.main-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea las tarjetas al inicio */
+    flex-wrap: wrap; /* Permite que las tarjetas se acomoden en varias filas */
+    gap: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
 
-        .form-card {
-            background-color: #333;
-            border: 1px solid #666;
-            border-radius: 8px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-            padding: 25px;
-            width: 250px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-            min-width: 250px; /* Garantiza un ancho consistente */
-        }
+/* Tarjetas individuales */
+.form-card {
+    background-color: #333;
+    border: 1px solid #666;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    padding: 25px;
+    flex: 1 1 calc(33.333% - 40px); /* Ocupa un tercio del ancho disponible, adaptándose */
+    max-width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    min-width: 200px; /* Garantiza un ancho mínimo */
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .form-card {
+        flex: 1 1 calc(50% - 20px); /* Cambia a ocupar la mitad del ancho disponible */
+    }
+}
+
+@media (max-width: 480px) {
+    .form-card {
+        flex: 1 1 100%; /* Ocupa todo el ancho disponible */
+    }
+}
+
 
         .form-card:hover {
             transform: scale(1.1);
@@ -262,16 +277,22 @@ footer {
             <a th:href="@{/clientes}">Clientes</a>
         </div>
         <div class="form-card">
-            <h4>Ir Al Principal</h4>
-            <a th:href="@{/principal}">Vista</a>
-        </div>
-        <div class="form-card">
             <h4>Ir Al Almacen</h4>
             <a th:href="@{/almacen}">Almacen</a>
         </div>      
         <div class="form-card">
             <h4>Ir A Proveedores</h4>
             <a th:href="@{/proveedores}">Proveedores</a>
+        </div>
+
+        <div class="form-card">
+            <h4>Ir A Movimientos</h4>
+            <a th:href="@{/detalle_movimientos}">Movimientos</a>
+        </div>
+
+        <div class="form-card">
+            <h4>Ir A Reporte BI</h4>
+            <a th:href="@{/powerbi}">Reporte</a>
         </div>
 
         <br><br><br><br>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Registrar Movimiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        nav {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            color: #444;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span>Registrar Movimiento</span>
+        <a th:href="@{/movimientos}">Listado de Movimientos</a>
+    </nav>
+
+    <h2>Registrar Movimiento</h2>
+    <form th:action="@{/movimientos/guardar}" th:object="${movimiento}" method="POST">
+        <div class="form-group">
+            <label for="almacen_id">ID Almacén</label>
+            <input type="number" id="almacen_id" th:field="*{almacen_id}" placeholder="Ingresar ID Almacén" required>
+        </div>
+        <div class="form-group">
+            <label for="fecha_envio">Fecha Envío</label>
+            <input type="date" id="fecha_envio" th:field="*{fecha_envio}" required>
+        </div>
+        <div class="form-group">
+            <label for="tipo_movimiento">Tipo Movimiento</label>
+            <select id="tipo_movimiento" th:field="*{tipo_movimiento}" required>
+                <option value="" disabled selected>Seleccione el tipo de movimiento</option>
+                <option value="Ingreso">Ingreso</option>
+                <option value="Egreso">Egreso</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="total">Total</label>
+            <input type="number" step="0.01" id="total" th:field="*{total}" placeholder="Ingrese el total" required>
+        </div>
+        <div class="form-group">
+            <label for="cliente_id">ID Cliente</label>
+            <input type="number" id="cliente_id" th:field="*{cliente_id}" placeholder="Ingresar ID Cliente" required>
+        </div>
+        <button type="submit" class="btn">Registrar</button>
+    </form>
+</body>
+</html>

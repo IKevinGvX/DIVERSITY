@@ -9,56 +9,64 @@
             href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
         <link rel="stylesheet"
             href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
     </head>
     <body class="bg-gray-900 text-white">
         <style>
-        .table-container {
-            background: linear-gradient(145deg, #4a148c, #1c1c1c);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(128, 0, 128, 0.7);
-            padding: 20px;
-        }
+    .table-container {
+        background: linear-gradient(145deg, #4a148c, #1c1c1c);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(128, 0, 128, 0.7);
+        padding: 20px;
+    }
 
-        table {
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-        }
+    table {
+        color: #fff;
+        font-family: 'Arial', sans-serif;
+        font-size: 14px;
+    }
 
-        th {
-            background: #6a1b9a;
-            color: #ffffff;
-            text-align: center;
-        }
+    th {
+        background: #6a1b9a;
+        color: #ffffff;
+        text-align: center;
+    }
 
-        td {
-            text-align: center;
-            transition: transform 0.3s, background 0.3s;
-        }
+    td {
+        text-align: center;
+        transition: transform 0.3s, background 0.3s;
+    }
 
-        td:hover {
-            transform: scale(1.05);
-            background: rgba(106, 27, 154, 0.5);
-        }
+    td:hover {
+        transform: scale(1.05);
+        background: rgba(106, 27, 154, 0.5);
+    }
 
-        .btn-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #d500f9;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 50%;
-            font-size: 2em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .btn-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #d500f9;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50%;
+        font-size: 2em;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-        .btn-float:hover {
-            background-color: #8e24aa;
-        }
-    </style>
+    .btn-float:hover {
+        background-color: #8e24aa;
+    }
+
+    .dt-buttons .dt-button {
+        margin: 5px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+</style>
 
         <header>
             <div class="container mx-auto text-center py-4">
@@ -69,6 +77,7 @@
                 </nav>
             </div>
         </header>
+
         <div class="register-button-container text-center mt-6">
             <a th:href="@{/openalmacenproductos}"
                 class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
@@ -81,13 +90,7 @@
                 Registrar Almacén
             </a>
         </div>
-        <!-- Buttons below the table -->
-        <div class="button-container text-center mt-6">
-            <a href="/reporte"
-                class="btn-custom bg-indigo-500 text-white px-6 py-3 rounded hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 mx-2">
-                Reporte
-            </a>
-        </div>
+
         <div class="table-container mx-auto mt-6">
             <table id="almacenTable" class="table-auto w-full">
                 <thead>
@@ -122,10 +125,90 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script
             src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
         <script>
-        $(document).ready(function() {
-            $('#almacenTable').DataTable();
+    $(document).ready(function() {
+        $('#almacenTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<span style="color:white; font-weight:bold;">Exportar a Excel</span>',
+                    className: 'bg-green-600 text-white px-4 py-2 rounded-lg m-2 hover:bg-green-700',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna (Acciones)
+                    }
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: '<span style="color:white; font-weight:bold;">Exportar a CSV</span>',
+                    className: 'bg-blue-600 text-white px-4 py-2 rounded-lg m-2 hover:bg-blue-700',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna (Acciones)
+                    }
+                },
+                {
+                    text: '<span style="color:white; font-weight:bold;">Exportar a XML</span>',
+                    className: 'bg-purple-600 text-white px-4 py-2 rounded-lg m-2 hover:bg-purple-700',
+                    action: function (e, dt, button, config) {
+                        // Generar XML manualmente excluyendo la última columna (Acciones)
+                        const data = dt.data().toArray();
+                        let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n<almacenes>\n';
+                        data.forEach(row => {
+                            xmlContent += '  <almacen>\n';
+                            xmlContent += `    <id>${row[0]}</id>\n`;
+                            xmlContent += `    <nombre>${row[1]}</nombre>\n`;
+                            xmlContent += `    <direccion>${row[2]}</direccion>\n`;
+                            xmlContent += '  </almacen>\n';
+                        });
+                        xmlContent += '</almacenes>';
+
+                        // Descargar XML
+                        const blob = new Blob([xmlContent], { type: 'application/xml' });
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = 'almacenes.xml';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<span style="color:white; font-weight:bold;">Exportar a PDF</span>',
+                    className: 'bg-red-600 text-white px-4 py-2 rounded-lg m-2 hover:bg-red-700',
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna (Acciones)
+                    },
+                    customize: function (doc) {
+                        doc.styles.tableHeader = {
+                            fillColor: '#6a1b9a',
+                            color: 'white',
+                            alignment: 'center'
+                        };
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<span style="color:white; font-weight:bold;">Imprimir</span>',
+                    className: 'bg-yellow-600 text-white px-4 py-2 rounded-lg m-2 hover:bg-yellow-700',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna (Acciones)
+                    }
+                }
+            ]
         });
-    </script>
+    });
+</script>
+
     </body>
 </html>

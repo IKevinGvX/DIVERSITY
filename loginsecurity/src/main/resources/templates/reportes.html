@@ -2,11 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Reporte de Productos con Bajo Stock</title>
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+        <link rel="stylesheet"
+            href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
         <style>
-            /* Estilos optimizados */
+            /* Estilo mejorado */
             body {
                 font-family: 'Arial', sans-serif;
-                background-color: #f4f4f9;
+                background-color: #f9f9f9;
                 margin: 0;
                 padding: 0;
                 color: #333;
@@ -15,47 +30,54 @@
             .container {
                 margin: 30px auto;
                 padding: 20px;
-                width: 80%;
-                background: #fff;
+                width: 90%;
+                background: #ffffff;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                color: #333;
             }
 
-            h1, h2 {
+            h1 {
                 text-align: center;
                 margin-bottom: 20px;
+                font-size: 28px;
+                font-weight: bold;
                 color: #333;
+                text-transform: uppercase;
             }
 
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 30px;
+                margin: 20px 0;
+                background-color: #ffffff;
+                border-radius: 5px;
+                overflow: hidden;
                 font-size: 16px;
-            }
-
-            th, td {
-                border: 1px solid #ddd;
-                text-align: center;
-                padding: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             th {
-                background-color: #4CAF50;
+                background-color: #333;
                 color: white;
                 text-transform: uppercase;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            tr:hover {
-                background-color: #f1f1f1;
+                font-weight: bold;
+                padding: 12px;
             }
 
             td {
-                font-weight: 500;
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 10px;
+                color: #333;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            tr:hover {
+                background-color: #e6f7ff;
             }
 
             .button-container {
@@ -64,44 +86,43 @@
             }
 
             .button {
-                padding: 10px 20px;
+                padding: 12px 25px;
                 background-color: #007bff;
-                color: #fff;
+                color: white;
                 text-decoration: none;
-                border-radius: 5px;
-                transition: background-color 0.3s;
+                border-radius: 8px;
                 font-size: 16px;
+                font-weight: bold;
+                text-transform: uppercase;
+                transition: background-color 0.3s ease-in-out;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             }
 
             .button:hover {
                 background-color: #0056b3;
             }
 
-            .iframe-container {
-                position: relative;
-                width: 100%;
-                padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-                height: 0;
-                overflow: hidden;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
+            .dt-buttons .dt-button {
+                background-color: #4caf50 !important;
+                color: white !important;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 15px;
+                margin: 5px;
+                font-size: 14px;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
             }
 
-            .iframe-container iframe {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                border: 0;
+            .dt-buttons .dt-button:hover {
+                background-color: #45a049 !important;
             }
         </style>
     </head>
     <body>
         <div class="container">
             <h1>Productos con Bajo Stock (Menos de 30 Unidades)</h1>
-            <table>
+            <table id="productosTable" class="display">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -111,8 +132,8 @@
                 </thead>
                 <tbody>
                     <tr th:each="producto : ${productos}">
-                        <td th:text="${producto.producto_id}"></td>
-                        <td th:text="${producto.nombre_producto}"></td>
+                        <td th:text="${producto.productoid}"></td>
+                        <td th:text="${producto.nombreproducto}"></td>
                         <td th:text="${producto.stock}"></td>
                     </tr>
                 </tbody>
@@ -122,5 +143,63 @@
                 <a href="/productos" class="button">Volver a Productos</a>
             </div>
         </div>
+
+        <script>
+            $(document).ready(function() {
+                $('#productosTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Exportar a Excel',
+                            className: 'btn btn-success',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            text: 'Exportar a CSV',
+                            className: 'btn btn-primary',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            text: 'Exportar a XML',
+                            className: 'btn btn-warning',
+                            action: function(e, dt, button, config) {
+                                const data = dt.rows({ search: 'applied' }).data().toArray();
+                                let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n<productos>\n';
+                                data.forEach(row => {
+                                    xmlContent += '  <producto>\n';
+                                    xmlContent += `    <id>${row[0]}</id>\n`;
+                                    xmlContent += `    <nombre>${row[1]}</nombre>\n`;
+                                    xmlContent += `    <stock>${row[2]}</stock>\n`;
+                                    xmlContent += '  </producto>\n';
+                                });
+                                xmlContent += '</productos>';
+
+                                const blob = new Blob([xmlContent], { type: 'application/xml' });
+                                const link = document.createElement('a');
+                                link.href = URL.createObjectURL(blob);
+                                link.download = 'productos_bajo_stock.xml';
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            text: 'Imprimir',
+                            className: 'btn btn-info',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
     </body>
 </html>

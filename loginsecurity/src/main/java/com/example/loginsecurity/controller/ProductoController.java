@@ -114,7 +114,7 @@ public class ProductoController {
         model.addAttribute("footerText", "© 2024 Inspection Report. All rights reserved.");
 
         model.addAttribute("iframeUrl",
-                "https://app.powerbi.com/view?r=eyJrIjoiMDNhMWY1MmQtZDFmYS00ZDU1LTgzNmQtNjJmNjIzY2RkNjc4IiwidCI6IjEwYWVmMTg5LTA1ZGItNGY2Zi05NTdmLTI3MGY5N2JmNTAzYiIsImMiOjZ9");
+                "https://app.powerbi.com/view?r=eyJrIjoiM2MwNWZlZjQtOGJlYS00ZDNhLWE2NjQtNDg2YTgxMWU0MzEyIiwidCI6IjEwYWVmMTg5LTA1ZGItNGY2Zi05NTdmLTI3MGY5N2JmNTAzYiIsImMiOjZ9");
 
         return "powerbi";
     }

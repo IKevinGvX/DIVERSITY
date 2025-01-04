@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimientos - Almacén Destinado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <header>
+        <div class="container mx-auto text-center py-4">
+            <h1 class="text-3xl font-bold">Movimientos - Almacén Destinado</h1>
+            <nav class="mt-4">
+                <a href="/index/3" class="text-purple-300 hover:text-purple-500 px-4">Inicio</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="register-button-container text-center mt-6">
+        <a th:href="@{/movimientos/form}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Registrar Movimiento</a>
+    </div>
+
+    <div class="table-container mx-auto mt-6">
+        <table id="movimientosTable" class="table-auto w-full">
+            <thead>
+                <tr>
+                    <th>ID Movimiento</th>
+                    <th>ID Almacén</th>
+                    <th>Fecha Envío</th>
+                    <th>Tipo Movimiento</th>
+                    <th>Total</th>
+                    <th>ID Cliente</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="movimiento : ${movimientos}" class="odd:bg-gray-800 even:bg-gray-700">
+                    <td th:text="${movimiento.movimiento_id}">1</td>
+                    <td th:text="${movimiento.almacen_id}">101</td>
+                    <td th:text="${movimiento.fecha_envio}">2025-01-03</td>
+                    <td th:text="${movimiento.tipo_movimiento}">Ingreso</td>
+                    <td th:text="${movimiento.total}">500.00</td>
+                    <td th:text="${movimiento.cliente_id}">301</td>
+                    <td>
+                        <a th:href="@{/movimientos/editar/{id}(id=${movimiento.movimiento_id})}" class="text-blue-500 hover:text-blue-700 px-2">Actualizar</a>
+                        <a th:href="@{/movimientos/eliminar/{id}(id=${movimiento.movimiento_id})}" class="text-red-500 hover:text-red-700 px-2">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#movimientosTable').DataTable();
+        });
+    </script>
+</body>
+</html>
